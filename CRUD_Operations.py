@@ -112,3 +112,35 @@ def list_overdue_books(session, loan_period_days=14):
     result = session.execute(stmt)
     return result.scalars().all()
 
+def return_book(session, borrowing_id, return_date=None):
+    borrowing = session.get(Borrowing, borrowing_id)
+    if borrowing is None:
+        raise ValueError(f"No borrowing with id {borrowing_id}.")
+    if borrowing.return_date is not None:
+        raise ValueError(f"Borrowing {borrowing_id} was already returned.") # Wanted to show the borrowing_id
+    if return_date is None:
+        return_date = date.today()
+       
+    borrowing.return_date = return_date
+    borrowing.book.available_copies += 1
+
+    session.commit()
+    session.refresh(borrowing)
+    return borrowing
+
+def update_member_email(session, member_id, new_email):
+    member = session.get(Member, member_id)
+    if member is None:
+        raise ValueError(f"No member found with id {member_id}!")
+
+    existing = session.execute(
+    select(Member).where(Member.email == new_email, Member.id != member_id)
+    ).scalar_one_or_none()
+
+    if existing:
+        raise ValueError(f"Email {new_email} is already used by another member.")
+
+    member.email = new_email
+    session.commit()
+    session.refresh(member)
+    return member
