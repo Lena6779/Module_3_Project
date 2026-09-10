@@ -12,11 +12,11 @@ def seed_data():
             return
 
         # Add book data
-        b1 = crud.add_book(session, "The Hobbit", "978-0-618-00221-3", 1937, 3, ["J.R.R. Tolkien"])
-        b2 = crud.add_book(session, "The Fellowship of the Ring", "978-0-618-00222-0", 1954, 2, ["J.R.R. Tolkien"])
-        b3 = crud.add_book(session, "A Short History of Nearly Everything", "978-0-7679-0818-4", 2003, 2, ["Bill Bryson"])
+        b1 = crud.add_book(session, "The Hobbit", "978-0-618-00221-3", 1937, 4, ["J.R.R. Tolkien"])
+        b2 = crud.add_book(session, "The Fellowship of the Ring", "978-0-618-00222-0", 1954, 4, ["J.R.R. Tolkien"])
+        b3 = crud.add_book(session, "A Short History of Nearly Everything", "978-0-7679-0818-4", 2003, 5, ["Bill Bryson"])
         b4 = crud.add_book(session, "Sapiens", "978-0-06-231609-7", 2011, 1, ["Yuval Noah Harari"])
-        b5 = crud.add_book(session, "Good Omens", "978-0-06-085398-3", 1990, 2, ["Terry Pratchett", "Neil Gaiman"])
+        b5 = crud.add_book(session, "Good Omens", "978-0-06-085398-3", 1990, 6, ["Terry Pratchett", "Neil Gaiman"])
 
         # Add member data
         m1 = crud.add_member(session, "Bo Dennis", "bo.dennis@example.com", date.today() - timedelta(days=400))
