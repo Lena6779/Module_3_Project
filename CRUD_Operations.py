@@ -144,3 +144,34 @@ def update_member_email(session, member_id, new_email):
     session.commit()
     session.refresh(member)
     return member
+
+def remove_book(session, book_id):
+        book = session.get(Book, book_id)
+        if book is None:
+            raise ValueError(f"No book found with id {book_id}!")
+
+        active_borrowing = session.execute(
+        select(Borrowing).where(Borrowing.book_id == book_id, Borrowing.return_date.is_(None))
+        ).first()
+
+        if active_borrowing:
+            raise ValueError(f"Cannot remove {book.title!r} — it is currently checked out.")
+
+        session.delete(book)
+        session.commit()
+
+def remove_member(session, member_id):
+        member = session.get(Member, member_id)
+        if member is None:
+            raise ValueError(f"No member found with id {member_id}!")
+        active_borrowing = session.execute(
+            select(Borrowing).where(Borrowing.member_id == member_id, Borrowing.return_date.is_(None))
+            ).first()
+
+        if active_borrowing:
+            raise ValueError(f"Cannot remove {member.name!r} — they have active borrowings.")
+
+        session.delete(member)
+        session.commit()
+
+       
